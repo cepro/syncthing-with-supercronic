@@ -1,0 +1,53 @@
+app = "syncthing-with-supercronic"
+primary_region = "lhr"
+
+[env]
+  # Disable the GUI:
+  # STGUIADDRESS = ""
+
+  # Could enable access (through wireguard) with the following:
+  STGUIADDRESS = "fly-local-6pn:8384"
+
+[mounts]
+  source="syncthing_files"
+  destination="/var/syncthing"
+
+[[services]]
+  internal_port = 22000
+  protocol = "tcp"
+
+  [[services.ports]]
+    port = 22000
+
+  [[services.tcp_checks]]
+    grace_period = "1s"
+    interval = "15s"
+    restart_limit = 0
+    timeout = "2s"
+
+[[services]]
+  internal_port = 22000
+  protocol = "udp"
+
+  [[services.ports]]
+    port = 22000
+
+[[services]]
+  internal_port = 21027
+  protocol = "udp"
+
+  [[services.ports]]
+    port = 21027
+
+[[vm]]
+size = 'shared-cpu-1x'
+
+[checks]
+[checks.supercronic_ok]
+grace_period = "5s"
+interval = "30s"
+method = "get"
+path = "/health"
+port = 9746
+timeout = "10s"
+type = "http"

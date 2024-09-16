@@ -29,6 +29,12 @@ RUN curl -fsSLO "$SYNCTHING_URL" \
  && mv "${SYNCTHING_TAR}/syncthing" "$SYNCTHING_BIN" \
  && chmod +x "$SYNCTHING_BIN"
 
+EXPOSE 21027/tcp
+EXPOSE 22000/udp
+EXPOSE 22000/tcp
+
+ENV PUID=1000 PGID=1000 HOME=/var/syncthing
+
 # Supervisor
 
 RUN mkdir -p /var/log/supervisor
