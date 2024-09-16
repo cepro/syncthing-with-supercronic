@@ -1,2 +1,2 @@
 
-* * * * * echo "hello minutely echo"
+*/15 * * * * echo "hello 15 min echo"
