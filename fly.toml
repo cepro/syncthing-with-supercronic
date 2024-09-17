@@ -11,6 +11,8 @@ primary_region = "lhr"
 [mounts]
   source="syncthing_files"
   destination="/var/syncthing"
+  auto_extend_size_threshold = 80
+  auto_extend_size_increment = "1GB"
 
 [[services]]
   internal_port = 22000
