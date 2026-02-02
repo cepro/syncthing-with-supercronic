@@ -64,7 +64,8 @@ Then locally open <http://127.0.0.1:38384/>
 ```sh
 fly apps create --name "simt-syncthing-with-cron" --org microgridfoundry
 fly volumes create --region lhr --size 1 --count 1 --yes syncthing_files -a simt-syncthing-with-cron
-fly deploy --no-public-ips
+fly ips allocate-v4 --shared -a simt-syncthing-with-cron
+fly deploy
 ```
 
 ## Subsequent Deployments

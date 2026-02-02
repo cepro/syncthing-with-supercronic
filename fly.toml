@@ -5,7 +5,7 @@ primary_region = "lhr"
   # Disable the GUI:
   # STGUIADDRESS = ""
 
-  # Could enable access (through wireguard) with the following:
+  # access the admin UI by `fly proxy 38384:8384 -a simt-syncthing-with-cron` to here:
   STGUIADDRESS = "0.0.0.0:8384"
 
 [mounts]
