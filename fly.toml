@@ -1,4 +1,4 @@
-app = "syncthing-with-supercronic"
+app = "simt-syncthing-with-cron"
 primary_region = "lhr"
 
 [env]
@@ -22,10 +22,9 @@ primary_region = "lhr"
     port = 22000
 
   [[services.tcp_checks]]
-    grace_period = "1s"
+    grace_period = "30s"
     interval = "15s"
-    restart_limit = 0
-    timeout = "2s"
+    timeout = "5s"
 
 [[services]]
   internal_port = 22000
@@ -42,14 +41,28 @@ primary_region = "lhr"
     port = 21027
 
 [[vm]]
-size = 'shared-cpu-1x'
+  size = 'shared-cpu-1x'
+  memory = '512mb'
 
 [checks]
-[checks.supercronic_ok]
-grace_period = "5s"
-interval = "30s"
-method = "get"
-path = "/health"
-port = 9746
-timeout = "10s"
-type = "http"
+  [checks.supercronic_ok]
+    grace_period = "30s"
+    interval = "30s"
+    method = "get"
+    path = "/health"
+    port = 9746
+    timeout = "10s"
+    type = "http"
+
+  [checks.syncthing_api]
+    grace_period = "30s"
+    interval = "30s"
+    method = "get"
+    path = "/rest/noauth/health"
+    port = 8384
+    timeout = "10s"
+    type = "http"
+
+[[restart]]
+  policy = "always"
+  retries = 5
