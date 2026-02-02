@@ -1,5 +1,6 @@
 app = "simt-syncthing-with-cron"
 primary_region = "lhr"
+kill_timeout = "35s"
 
 [env]
   # Disable the GUI:
