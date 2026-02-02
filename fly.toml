@@ -37,7 +37,9 @@ kill_timeout = "35s"
     port = 21027
 
 [[vm]]
-  size = 'shared-cpu-1x'
+  # size = 'shared-cpu-2x'
+  cpu_kind = 'shared'
+  cpus = 2
   memory = '512mb'
 
 [checks]
