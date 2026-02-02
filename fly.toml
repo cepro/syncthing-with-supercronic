@@ -6,7 +6,7 @@ primary_region = "lhr"
   # STGUIADDRESS = ""
 
   # Could enable access (through wireguard) with the following:
-  STGUIADDRESS = "fly-local-6pn:8384"
+  STGUIADDRESS = "0.0.0.0:8384"
 
 [mounts]
   source="syncthing_files"
@@ -20,11 +20,6 @@ primary_region = "lhr"
 
   [[services.ports]]
     port = 22000
-
-  [[services.tcp_checks]]
-    grace_period = "30s"
-    interval = "15s"
-    timeout = "5s"
 
 [[services]]
   internal_port = 22000

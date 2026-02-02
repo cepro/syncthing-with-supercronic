@@ -30,7 +30,7 @@ RUN curl -fsSLO "$SYNCTHING_URL" \
  && chmod +x "$SYNCTHING_BIN" \
  && rm -rf "${SYNCTHING_TAR}.tar.gz" "${SYNCTHING_TAR}"
 
-EXPOSE 21027/tcp
+EXPOSE 21027/udp
 EXPOSE 22000/udp
 EXPOSE 22000/tcp
 
