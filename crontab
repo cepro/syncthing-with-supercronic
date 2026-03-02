@@ -1,5 +1,5 @@
 # Profile downloads - HMCE every 2 hours at :00
-0 */2 * * * python3 -m simt_emlite.cli.profile_download --config /app/config/config.daily-hmce.properties 2>&1
+0 */2 * * * profile_download --config /app/config/config.daily-hmce.properties 2>&1
 
 # Profile downloads - WLCE every 2 hours at :00, offset by 1 hour
-0 1-23/2 * * * python3 -m simt_emlite.cli.profile_download --config /app/config/config.daily-wlce.properties 2>&1
+0 1-23/2 * * * profile_download --config /app/config/config.daily-wlce.properties 2>&1
