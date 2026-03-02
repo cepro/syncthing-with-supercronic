@@ -9,8 +9,8 @@ This server serves 2 purposes:
 
 ## Architecture
 
-- **Syncthing** (v2.0.13): File synchronization
-- **Supercronic** (v0.2.42): Cron job scheduler with Prometheus metrics
+- **Syncthing** (v2.0.14): File synchronization
+- **Supercronic** (v0.2.43): Cron job scheduler with Prometheus metrics
 - **Supervisord**: Process manager that keeps both services running
 
 ## File System on the Host
@@ -59,6 +59,21 @@ fly proxy 38384:8384 -a simt-syncthing-with-cron
 
 Then locally open <http://127.0.0.1:38384/>
 
+## Profile Downloads
+
+Supercronic runs two cron jobs that download daily profile log CSVs from Emlite meters using `simt-emlite` (installed from PyPI). Downloads are written directly into the syncthing-managed replica folders so new CSVs are automatically synced to other nodes.
+
+Two ESCOs are configured:
+
+- **HMCE** (~55 meters) - runs every 2 hours on even hours (00:00, 02:00, 04:00, ...)
+- **WLCE** (~35 meters) - runs every 2 hours on odd hours (01:00, 03:00, 05:00, ...)
+
+The stagger ensures only one ESCO downloads at a time.
+
+Each ESCO has a config file baked into the image at `/app/config/`. These are derived from the source configs in `simt-emlite/` with two changes: `rootfolder` points to the fly volume path (`/var/syncthing/<ESCO>/replicas`) and `enddate` is removed (defaults to today). The fixed `startdate=2025-11-01` means each run catches up any missed days since that date.
+
+The downloader connects to meters via the gRPC mediator using mTLS certificates and looks up meter metadata from Supabase. All credentials are provided as Fly secrets (see below).
+
 ## Fly Setup (First Deployment)
 
 ```sh
@@ -67,6 +82,30 @@ fly volumes create --region lhr --size 1 --count 1 --yes syncthing_files -a simt
 fly ips allocate-v4 --shared -a simt-syncthing-with-cron
 fly deploy
 ```
+
+### Set Secrets
+
+The profile downloader requires these environment variables set as Fly secrets:
+
+```sh
+fly secrets set -a simt-syncthing-with-cron \
+    MEDIATOR_SERVER="..." \
+    MEDIATOR_CLIENT_CERT="..." \
+    MEDIATOR_CLIENT_KEY="..." \
+    MEDIATOR_CA_CERT="..."
+```
+
+### Replica Folder Structure
+
+The syncthing volume at `/var/syncthing` must contain the ESCO replica directories that the downloader writes into:
+
+```txt
+/var/syncthing/
+  HMCE/replicas/    # HMCE profile CSVs land here
+  WLCE/replicas/    # WLCE profile CSVs land here
+```
+
+These directories are created by syncthing when it accepts shared folders from peers. If deploying fresh, connect to the syncthing admin GUI (see above) and accept the HMCE and WLCE folder shares before the first cron run.
 
 ## Subsequent Deployments
 
