@@ -3,7 +3,7 @@ FROM python:3.13-slim
 RUN apt-get update && apt-get install -y --no-install-recommends supervisor curl && rm -rf /var/lib/apt/lists/*
 
 # simt-emlite profile downloader
-ARG SIMT_EMLITE_VERSION=1.2.9
+ARG SIMT_EMLITE_VERSION=1.2.10
 RUN pip install --no-cache-dir simt-emlite==${SIMT_EMLITE_VERSION}
 
 # Supercronic
