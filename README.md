@@ -9,7 +9,7 @@ This server serves 2 purposes:
 
 ## Architecture
 
-- **Syncthing** (v2.0.14): File synchronization
+- **Syncthing** (v2.1.5): File synchronization. Automatic binary upgrades are disabled so restarts use a version compatible with the persistent configuration.
 - **Supercronic** (v0.2.43): Cron job scheduler with Prometheus metrics
 - **Supervisord**: Process manager that keeps both services running
 
@@ -29,7 +29,7 @@ The deployment includes multiple layers of health monitoring:
 4. **Fly Syncthing API check**: Monitors `/rest/noauth/health` on port 8384 every 30s
 5. **Supervisor autorestart**: Both services restart automatically if they crash
 
-If any health check fails, Fly.io will restart the container.
+Failing health checks do not restart the Machine automatically; inspect the process and logs when a check is critical.
 
 ## Logs
 

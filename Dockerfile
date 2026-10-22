@@ -23,7 +23,7 @@ COPY crontab /supercronic/crontab
 
 # Syncthing
 
-ARG SYNCTHING_VERSION=2.0.14
+ARG SYNCTHING_VERSION=2.1.5
 ARG SYNCTHING_TAR=syncthing-linux-amd64-v${SYNCTHING_VERSION}
 ARG SYNCTHING_URL=https://github.com/syncthing/syncthing/releases/download/v${SYNCTHING_VERSION}/${SYNCTHING_TAR}.tar.gz
 ARG SYNCTHING_BIN=/usr/local/bin/syncthing
